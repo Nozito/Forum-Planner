@@ -1,0 +1,10 @@
+{# templates/security/2fa_form.html.twig #}
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>Vérification en deux étapes</h1>
+    <form method="post" action="{{ path('2fa_login') }}">
+        <label for="auth_code">Entrez votre code d'authentification :</label>
+        <input type="text" id="auth_code" name="_auth_code">
+        <button type="submit">Vérifier</button>
+    </form>
+{% endblock %}

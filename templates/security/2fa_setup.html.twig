@@ -1,0 +1,12 @@
+{# templates/security/2fa_setup.html.twig #}
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>Configurer la vérification en deux étapes</h1>
+    <p>Scannez ce QR Code avec l'application Google Authenticator :</p>
+    <img src="{{ qrCodeUrl }}" alt="QR Code Google Authenticator">
+    <p>Entrez le code de vérification à 6 chiffres généré par l'application :</p>
+    <form method="post">
+        <input type="text" name="code" required>
+        <button type="submit">Valider</button>
+    </form>
+{% endblock %}
