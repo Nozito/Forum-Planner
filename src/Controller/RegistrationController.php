@@ -16,9 +16,13 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use App\Form\UserType;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
+use Endroid\QrCode\Builder\Builder;
 
 class RegistrationController extends AbstractController
 {
+
     public function __construct(private EmailVerifier $emailVerifier)
     {
     }

@@ -7,7 +7,6 @@
         <div class="max-w-lg w-full space-y-8">
             <h1 class="text-2xl font-bold mb-6 text-center text-indigo-600">Configurer l'authentification à deux facteurs (2FA)</h1>
 
-            {# Messages de succès ou d'erreur #}
             {% for message in app.flashes('success') %}
                 <div class="bg-green-500 text-white p-4 mb-4 rounded-lg shadow-lg">{{ message }}</div>
             {% endfor %}
@@ -16,17 +15,11 @@
                 <div class="bg-red-500 text-white p-4 mb-4 rounded-lg shadow-lg">{{ message }}</div>
             {% endfor %}
 
-            {# QR Code et instructions #}
             <div class="text-center mb-6">
-                {% if qrCodeUrl %}
-                    <img src="{{ qrCodeUrl }}" alt="QR Code" class="mx-auto border-2 border-indigo-500 rounded-lg shadow-md">
-                {% else %}
-                    <p class="text-red-500">Unable to generate QR code. Please try again.</p>
-                {% endif %}
-                    <p class="mt-4 text-gray-700">Scannez ce QR code avec l'application Google Authenticator.</p>
+                <img src="{{ qrCodeUrl }}" alt="QR Code">
+                <p class="mt-4 text-gray-700">Scannez ce QR code avec l'application Google Authenticator.</p>
             </div>
 
-            {# Formulaire pour entrer le code de vérification #}
             <form method="POST" class="space-y-6">
                 <div>
                     <label for="auth_code" class="block text-sm font-medium text-gray-700">Entrez le code de vérification</label>
