@@ -3,6 +3,7 @@ scheb_two_factor:
     security_tokens:
         - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
         - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
+        - Acme\AuthenticationBundle\Token\CustomAuthenticationToken
     google:
         enabled: true                  # If Google Authenticator should be enabled, default false
         server_name: 'ForumPlanner'     # Server name used in QR code

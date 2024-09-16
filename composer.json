@@ -13,6 +13,7 @@
         "doctrine/orm": "^3.2",
         "endroid/qr-code": "^5.1",
         "phpdocumentor/reflection-docblock": "^5.4",
+        "phpmailer/phpmailer": "*",
         "phpstan/phpdoc-parser": "^1.30",
         "scheb/2fa-google-authenticator": "^7.5",
         "symfony/asset": "7.1.*",

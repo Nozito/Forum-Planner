@@ -26,7 +26,7 @@ class TwoFactorController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/2fa/setup', name: 'app_2fa_setup')]
+    #[Route('/enable_2fa', name: 'app_2fa_setup')]
     public function setup2FA(Request $request): Response
     {
         /** @var User $user */
@@ -46,7 +46,7 @@ class TwoFactorController extends AbstractController
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
                 $this->addFlash('success', '2FA activée avec succès!');
-                return $this->redirectToRoute('profile');
+                return $this->redirectToRoute('app_profile');
             } else {
                 $this->addFlash('error', 'Le code est incorrect, veuillez réessayer.');
             }
@@ -60,7 +60,7 @@ class TwoFactorController extends AbstractController
         ]);
     }
 
-    #[Route('/2fa/qrcode', name: 'app_2fa_qrcode')]
+    #[Route('/qrcode', name: 'app_2fa_qrcode')]
     public function showQrCode(): Response
     {
         /** @var User $user */

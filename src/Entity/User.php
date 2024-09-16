@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -41,8 +43,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $googleAuthenticatorSecret = null;
 
-    private bool $isTwoFactorEnabled = false; // Attribut stocké en base de données ou géré d'une autre façon
+    private bool $isTwoFactorEnabled = false;
 
+    #[ORM\ManyToOne(inversedBy: 'owner')]
+    private ?Team $ownedTeams = null;
+
+    /**
+     * @var Collection<int, Forum>
+     */
+    #[ORM\OneToMany(targetEntity: Forum::class, mappedBy: 'user')]
+    private Collection $forums;
+
+    /**
+     * @var Collection<int, Team>
+     */
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'members')]
+    private Collection $teams;
+
+    public function __construct()
+    {
+        $this->forums = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -164,6 +186,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     public function setTwoFactorEnabled(bool $enabled): self
     {
         $this->isTwoFactorEnabled = $enabled;
+
+        return $this;
+    }
+
+    public function getOwnedTeams(): ?Team
+    {
+        return $this->ownedTeams;
+    }
+
+    public function setOwnedTeams(?Team $ownedTeams): static
+    {
+        $this->ownedTeams = $ownedTeams;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Forum>
+     */
+    public function getForums(): Collection
+    {
+        return $this->forums;
+    }
+
+    public function addForum(Forum $forum): static
+    {
+        if (!$this->forums->contains($forum)) {
+            $this->forums->add($forum);
+            $forum->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForum(Forum $forum): static
+    {
+        if ($this->forums->removeElement($forum)) {
+            // set the owning side to null (unless already changed)
+            if ($forum->getUser() === $this) {
+                $forum->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Team>
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): static
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): static
+    {
+        $this->teams->removeElement($team);
 
         return $this;
     }
