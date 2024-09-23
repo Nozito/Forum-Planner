@@ -5,5 +5,3 @@
 
 2fa_login_check:
     path: /2fa_check
-    defaults:
-        _controller: "scheb_two_factor.authentication_controller::check"

@@ -44,26 +44,26 @@
             <!-- Section de gestion de l'authentification à deux facteurs -->
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Authentification à deux facteurs (2FA)</h2>
 
-            {% if is2faEnabled %}
-                <p class="text-green-700 font-medium mb-4">2FA est actuellement <strong>activée</strong>.</p>
-                <img src="{{ qrCodeUrl }}" alt="QR Code" class="mb-4 mx-auto w-32 h-32">
-
+            <!-- Formulaire pour désactiver 2FA -->
+            {% if user.isTwoFactorEnabled() %}
+                <p class="text-green-700 font-medium mb-4">L'A2F est actuellement <strong>activée</strong>.</p>
                 <form method="post">
-                    <input type="hidden" name="2fa_form" value="1">
+                    <input type="hidden" name="2fa_form" value="0">
                     <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                         Désactiver 2FA
                     </button>
                 </form>
             {% else %}
-                <p class="text-red-700 font-medium mb-4">2FA est actuellement <strong>désactivée</strong>.</p>
-
+                <!-- Formulaire pour activer 2FA -->
                 <form method="post">
+                    <p class="text-red-700 font-medium mb-4">L'A2F est actuellement <strong>désactivée</strong>.</p>
                     <input type="hidden" name="2fa_form" value="1">
                     <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Activer 2FA
                     </button>
                 </form>
             {% endif %}
+
         </div>
     </div>
 {% endblock %}
