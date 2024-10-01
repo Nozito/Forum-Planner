@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Forum index{% endblock %}
+
+{% block javascripts %}
+    {% block importmap %}
+        {{ importmap(['app', 'search_bar']) }}
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div class="max-w-7xl mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-6">Gestion des Forums</h1>
+
+        {% for label, messages in app.flashes %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border border-{{ label == 'success' ? 'green' : 'red' }}-400 text-{{ label == 'success' ? 'green' : 'red' }}-700 px-4 py-3 rounded relative" role="alert">
+                        <span class="block sm:inline">{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="overflow-x-auto mb-6">
+            <table class="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+                <thead>
+                <tr class="bg-gray-100">
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Titre</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Organisateur</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Image</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Description</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Location</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if forums is empty %}
+                    <tr>
+                        <td colspan="6" class="py-4 px-6 text-center text-gray-500">Aucun forum trouvé</td>
+                    </tr>
+                {% else %}
+                {% endif %}
+                {% for forum in forums %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-4 px-6">{{ forum.title }}</td>
+                        <td class="py-4 px-6">
+                            {% if forum.user %}
+                                {{ forum.user.firstName }} {{ forum.user.lastName }}
+                            {% else %}
+                                <span class="text-gray-500">No user assigned</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6">
+                            {% if forum.picture %}
+                                <img src="{{ forum.picture }}" alt="{{ forum.title }}" class="h-auto max-h-10">
+                            {% else %}
+                                <span class="text-gray-500">Pas d'image</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6">{{ forum.description }}</td>
+                        <td class="py-4 px-6">{{ forum.location }}</td>
+                        <td class="py-4 px-6">
+                            <a href="{{ path('app_forum_show', {'id': forum.id}) }}" class="text-blue-500 hover:underline">Voir</a>
+                            <a href="{{ path('app_forum_edit', {'id': forum.id}) }}" class="text-blue-500 hover:underline">Modifier</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ path('app_forum_new') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Créer un nouveau forum</a>
+    </div>
+{% endblock %}
