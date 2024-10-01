@@ -1,0 +1,17 @@
+<h1 class="text-2xl font-bold mb-4">Hi!</h1>
+
+<p class="text-gray-700 mb-4">
+    To reset your password, please visit the following link:
+</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}"
+   class="text-blue-500 hover:text-blue-700 underline break-all mb-4 block">
+    {{ url('app_reset_password', {token: resetToken.token}) }}
+</a>
+
+<p class="text-gray-700 mb-4">
+    This link will expire in
+    <span class="font-semibold">{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}</span>.
+</p>
+
+<p class="text-gray-700">Cheers!</p>

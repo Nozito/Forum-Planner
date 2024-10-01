@@ -16,6 +16,19 @@
             {{ form_errors(registrationForm) }}
 
             {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
+
+            <div>
+                {{ form_label(registrationForm.firstName, 'First Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(registrationForm.firstName, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+                {{ form_errors(registrationForm.firstName) }}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.lastName, 'Last Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(registrationForm.lastName, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+                {{ form_errors(registrationForm.lastName) }}
+            </div>
+
             <div>
                 {{ form_label(registrationForm.email, 'Email Address', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
                 {{ form_widget(registrationForm.email, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}

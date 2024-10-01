@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+{% block title %}User index{% endblock %}
+{% block javascripts %}
+    {% block importmap %}
+        {{ importmap(['app', 'search_bar']) }}
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+    <div class="max-w-7xl mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-6">Gestion des Utilisateurs</h1>
+
+        {% for label, messages in app.flashes %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border border-{{ label == 'success' ? 'green' : 'red' }}-400 text-{{ label == 'success' ? 'green' : 'red' }}-700 px-4 py-3 rounded relative" role="alert">
+                        <span class="block sm:inline">{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="mb-6">
+            <label for="searchInput" class="sr-only">Chercher un utilisateur</label>
+            <input type="text" id="searchInput" class="border border-gray-300 rounded py-2 px-4 w-full" placeholder="Chercher un utilisateur...">
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+                <thead>
+                <tr class="bg-gray-100">
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Email</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Nom</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Prénom</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Rôles</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Actions</th>
+                </tr>
+                </thead>
+                <tbody id="userTableBody">
+                {% for user in users %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-4 px-6">{{ user.email }}</td>
+                        <td class="py-4 px-6">{{ user.firstName }}</td>
+                        <td class="py-4 px-6">{{ user.lastName }}</td>
+                        <td class="py-4 px-6">
+                            {% if user.roles %}
+                                <div class="flex flex-wrap gap-2">
+                                    {% for role in user.roles %}
+                                        {% set roleClass = '' %}
+                                        {% if role == 'ROLE_ADMIN' %}
+                                            {% set roleClass = 'bg-red-100 text-red-800' %}
+                                        {% elseif role == 'ROLE_FORUM_ORGANIZER' %}
+                                            {% set roleClass = 'bg-green-100 text-green-800' %}
+                                        {% elseif role == 'ROLE_FORUM_ATTENDEE' %}
+                                            {% set roleClass = 'bg-blue-100 text-blue-800' %}
+                                        {% elseif role == 'ROLE_USER' %}
+                                            {% set roleClass = 'bg-orange-100 text-orange-800' %}
+                                        {% endif %}
+                                        <span class="inline-block {{ roleClass }} text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                                                {{ role|replace({'ROLE_': ''}) }}  {# Remove 'ROLE_' prefix for display #}
+                                            </span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <span class="text-gray-500">Aucun rôles</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6">
+                            <a href="{{ path('app_edit_roles', {'id': user.id}) }}" class="text-blue-500 hover:underline">Modifier les rôles</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="py-4 px-6 text-center text-gray-500">Aucun utilisateur trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

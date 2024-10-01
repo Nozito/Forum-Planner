@@ -25,4 +25,8 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    'search_bar' => [
+        'path' => './assets/search_bar.js',
+        'entrypoint' => true,
+    ],
 ];
