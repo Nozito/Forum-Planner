@@ -20,32 +20,43 @@ class ProfileController extends AbstractController
     #[Route('/profile', name: 'app_profile')]
     public function profile(Request $request): Response
     {
+        // Get the currently logged-in user
         /** @var User $user */
         $user = $this->getUser();
 
+        // Ensure the user is authenticated
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
+        }
+
+        $isTwoFactorEnabled = $user->isTwoFactorEnabled();
+
         if ($request->isMethod('POST')) {
-            $formType = $request->get('2fa_form');
+            // Get the form type submitted
+            $formType = $request->request->get('2fa_form');
 
             if ($formType === '1') {
-                // Rediriger l'utilisateur vers la configuration 2FA, sans activer directement
+                // Redirect to the 2FA configuration page
                 return $this->redirectToRoute('app_2fa_form');
             } elseif ($formType === '0') {
+                // If the user is deactivating 2FA
                 if ($user->isTwoFactorEnabled()) {
-                    // Désactiver la 2FA pour l'utilisateur
                     $user->setTwoFactorEnabled(false);
                     $this->entityManager->persist($user);
                     $this->entityManager->flush();
 
-                    // Ajoutez un message flash de succès
+                    // Add a flash success message
                     $this->addFlash('success', 'L\'authentification à deux facteurs a été désactivée.');
                 }
             }
         }
 
+        // Render the profile view with the user data
         return $this->render('security/profile.html.twig', [
             'user' => $user,
         ]);
     }
+
 
     #[Route('/profile/2fa_qrcode', name: 'app_2fa_qrcode')]
     public function show2FAQrCode(): Response

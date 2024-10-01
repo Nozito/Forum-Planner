@@ -43,6 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $googleAuthenticatorSecret = null;
 
+    #[ORM\Column(type: 'boolean')]
     private bool $isTwoFactorEnabled = false;
 
     #[ORM\ManyToOne(inversedBy: 'owner')]
