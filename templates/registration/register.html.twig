@@ -5,7 +5,7 @@
 {% block body %}
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Create an Account</h2>
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Créer un compte</h2>
 
             {% for flash_error in app.flashes('verify_email_error') %}
                 <div class="bg-red-100 text-red-700 p-4 mb-4 rounded-lg">
@@ -44,21 +44,21 @@
             <div class="flex items-center">
                 {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500'}}) }}
                 <label for="agreeTerms" class="ml-2 block text-sm text-gray-700">
-                    I agree to the terms and conditions
+                    J'accepte les conditions d'utilisation
                 </label>
                 {{ form_errors(registrationForm.agreeTerms) }}
             </div>
 
             <div>
                 <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Register
+                    S'inscrire
                 </button>
             </div>
             {{ form_end(registrationForm) }}
 
             <div class="text-center mt-4">
                 <a href="{{ path('app_login') }}" class="text-sm text-indigo-600 hover:text-indigo-500">
-                    Already have an account? Sign in
+                    J'ai déjà un compte ? Connectez-vous
                 </a>
             </div>
         </div>

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NoteForum index{% endblock %}
+
+{% block body %}
+    <h1>NoteForum index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for note_forum in note_forums %}
+            <tr>
+                <td>{{ note_forum.id }}</td>
+                <td>{{ note_forum.note }}</td>
+                <td>
+                    <a href="{{ path('app_note_forum_show', {'id': note_forum.id}) }}">show</a>
+                    <a href="{{ path('app_note_forum_edit', {'id': note_forum.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_note_forum_new') }}">Create new</a>
+{% endblock %}

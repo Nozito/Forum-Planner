@@ -29,4 +29,8 @@ return [
         'path' => './assets/search_bar.js',
         'entrypoint' => true,
     ],
+    'stars' => [
+        'path' => './assets/stars.js',
+        'entrypoint' => true,
+    ],
 ];

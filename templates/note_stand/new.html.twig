@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Évaluer le Stand{% endblock %}
+
+{% block body %}
+    <div class="flex justify-center items-center min-h-screen bg-gray-100">
+        <div class="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6">
+            <h1 class="text-2xl font-bold mb-4 text-center">Évaluez ce stand</h1>
+
+            {{ form_start(form, {'action': path('app_note_stand_new', {'id': stand.id}), 'method': 'POST'}) }}
+            {{ form_row(form._token) }}
+
+            <div class="mb-4">
+                <label class="block text-lg font-medium text-gray-700" for="note">Note</label>
+                <div class="rating mb-4 flex items-center justify-center">
+                    {% for i in 5..1 %}
+                        <input
+                                type="radio"
+                                id="star-{{ i }}"
+                                name="{{ form.note.vars.full_name }}"  {# Utilise full_name pour garantir le bon nom de champ #}
+                                value="{{ i }}"
+                                class="hidden peer"
+                                {{ form.note.vars.value == i ? 'checked' : '' }}  {# Assure que la bonne étoile soit pré-sélectionnée #}
+                                aria-label="Star {{ i }}"
+                                required
+                        >
+                        <label for="star-{{ i }}" class="cursor-pointer" aria-labelledby="star-{{ i }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                 class="w-8 h-8 {{ form.note.vars.value >= i ? 'fill-yellow-500' : 'fill-gray-300' }}">
+                                <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
+                            </svg>
+                        </label>
+                    {% endfor %}
+                </div>
+                <p class="text-sm text-gray-500">Sélectionnez une note de 1 à 5 étoiles.</p>
+            </div>
+
+
+
+            <div class="mb-4">
+                <label for="commentaire" class="block text-lg font-medium text-gray-700">Commentaire</label>
+                {{ form_widget(form.commentaire, {
+                    'attr': {
+                        'class': 'mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+                    }
+                }) }}
+            </div>
+
+            <button
+                    type="submit"
+                    class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                Envoyer
+            </button>
+
+            {{ form_end(form, {'render_rest': false}) }}
+        </div>
+    </div>
+
+    {% block stylesheets %}
+        <style>
+            .rating {
+                display: flex;
+                flex-direction: row-reverse;
+                gap: 0.3rem;
+                --stroke: #666;
+                --fill: #ffc73a;
+            }
+
+            .rating input {
+                appearance: unset;
+            }
+
+            .rating label {
+                cursor: pointer;
+                display: block;
+            }
+
+            .rating svg {
+                width: 2rem;
+                height: 2rem;
+                overflow: visible;
+                fill: transparent;
+                stroke: var(--stroke);
+                stroke-linejoin: bevel;
+                stroke-dasharray: 12;
+                transition: stroke 0.2s, fill 0.5s;
+            }
+
+            .rating label:hover svg {
+                stroke: var(--fill);
+            }
+
+            .rating input:checked ~ label svg {
+                transition: 0s;
+                fill: var(--fill);
+                stroke: var(--fill);
+                stroke-opacity: 0;
+                stroke-dasharray: 0;
+                stroke-linejoin: miter;
+                stroke-width: 8px;
+            }
+
+            @keyframes idle {
+                from {
+                    stroke-dashoffset: 24;
+                }
+            }
+
+            @keyframes yippee {
+                0% {
+                    transform: scale(1);
+                    fill: var(--fill);
+                    fill-opacity: 0;
+                    stroke-opacity: 1;
+                    stroke: var(--stroke);
+                    stroke-dasharray: 10;
+                    stroke-width: 1px;
+                    stroke-linejoin: bevel;
+                }
+
+                30% {
+                    transform: scale(0);
+                    fill: var(--fill);
+                    fill-opacity: 0;
+                    stroke-opacity: 1;
+                    stroke: var(--stroke);
+                    stroke-dasharray: 10;
+                    stroke-width: 1px;
+                    stroke-linejoin: bevel;
+                }
+
+                30.1% {
+                    stroke: var(--fill);
+                    stroke-dasharray: 0;
+                    stroke-linejoin: miter;
+                    stroke-width: 8px;
+                }
+
+                60% {
+                    transform: scale(1.2);
+                    fill: var(--fill);
+                }
+            }
+        </style>
+    {% endblock %}
+{% endblock %}

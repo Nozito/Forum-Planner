@@ -28,14 +28,14 @@ class ForumType extends AbstractType
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
-                'label' => 'Utilisateur :',
+                'label' => 'Organisateur :',
                 'choice_label' => function (User $user)
                 {
                     return $user->getFirstName() . ' ' . $user->getLastName();
                 },
                 'placeholder' => 'Sélectionnez un utilisateur',
-                'multiple' => false, // pour permettre la sélection multiple
-                'expanded' => false, // pour utiliser un select (mettre à true pour des cases à cocher)
+                'multiple' => false,
+                'expanded' => false,
             ])
         ;
     }

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Forum;
+use App\Entity\Stand;
+use App\Entity\User;
 use App\Form\ForumType;
 use App\Repository\ForumRepository;
 use Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand;
@@ -56,7 +58,7 @@ final class ForumController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_forum_edit', methods: ['GET', 'POST'])]
-    #[Security("is_granted('ROLE_FORUM_ORGANIZER') or is_granted('ROLE_ADMIN')")]
+    //#[Security("is_granted('ROLE_FORUM_ORGANIZER') or is_granted('ROLE_ADMIN')")]
     public function edit(Request $request, Forum $forum, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ForumType::class, $forum);

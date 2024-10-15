@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <title>{% block title %}ForumPlanner{% endblock %}</title>
+
+    <link rel="icon" href="assets/logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    {% block stylesheets %}
-    {% endblock %}
+
     {% block javascripts %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
     {% endblock %}
 </head>
 <body class="min-h-screen bg-gray-100">
-<!-- Barre de navigation -->
+
 <nav class="sticky top-0 bg-white border-b border-gray-200 py-4 shadow-sm z-50">
     <div class="container mx-auto flex justify-between items-center">
 
@@ -20,6 +22,7 @@
             <li><a href="{{ path('homepage') }}" class="hover:text-gray-900 transition">Accueil</a></li>
             <li><a href="{{ path('app_user_manager') }}" class="hover:text-gray-900 transition">Manager</a></li>
             <li><a href="{{path('app_forum')}}" class="hover:text-gray-900 transition">Forums</a></li>
+            <li><a href="{{path('app_stand')}}" class="hover:text-gray-900 transition">Stands</a></li>
             <li><a href="{{path('app_profile')}}" class="hover:text-gray-900 transition">Profil</a></li>
         </ul>
 
@@ -35,9 +38,7 @@
     </div>
 </nav>
 
-
-<!-- Contenu principal -->
-<main class="pt-30">
+<main class="pt-6">
     {% block body %}
     {% endblock %}
 </main>

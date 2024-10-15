@@ -3,36 +3,89 @@
 {% block title %}Forum{% endblock %}
 
 {% block body %}
-    <h1>Forum</h1>
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-semibold mb-6">Forum</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ forum.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ forum.title }}</td>
-            </tr>
-            <tr>
-                <th>Picture</th>
-                <td>{{ forum.picture }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ forum.description }}</td>
-            </tr>
-            <tr>
-                <th>Location</th>
-                <td>{{ forum.location }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg">
+                <tbody>
+                <tr class="border-b">
+                    <th class="py-3 px-6 text-left font-medium text-gray-600">Organisateur</th>
+                    <td class="py-3 px-6">
+                        {% if forum.user %}
+                            <span>{{ forum.user.firstName }} {{ forum.user.lastName }}</span>
+                        {% else %}
+                            <span class="text-gray-500">No user assigned</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-3 px-6 text-left font-medium text-gray-600">Title</th>
+                    <td class="py-3 px-6">{{ forum.title }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-3 px-6 text-left font-medium text-gray-600">Picture</th>
+                    <td class="py-3 px-6">{{ forum.picture }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-3 px-6 text-left font-medium text-gray-600">Description</th>
+                    <td class="py-3 px-6">{{ forum.description }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-3 px-6 text-left font-medium text-gray-600">Location</th>
+                    <td class="py-3 px-6">{{ forum.location }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="py-4 px-6 text-left font-medium text-gray-600">Note</th>
+                    <td class="py-4 px-6">
+                        {% if forum.notes|length > 0 %}
+                            {% set total = 0 %}
+                            {% for noteForum in forum.notes %}
+                                {% set total = total + noteForum.note %}
+                            {% endfor %}
+                            {% set average = (total / forum.notes|length)|round(1, 'floor') %}
 
-    <a href="{{ path('app_forum_index') }}">back to list</a>
+                            <div class="rating mb-4 flex items-center">
+                                {% for i in 1..5 %}
+                                    <label class="cursor-pointer" aria-labelledby="star{{ i }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 24 24"
+                                             class="w-8 h-8 {{ average >= i ? 'fill-yellow-500' : 'fill-gray-300' }}">
+                                            <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
+                                        </svg>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <span class="text-gray-500">Pas de note</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="py-3 px-6 text-left font-medium text-gray-600">Stands</th>
+                    <td class="py-3 px-6">
+                        {% for stand in forum.stands %}
+                            <span>{{ stand.title }}</span>
+                        {% else %}
+                            <span class="text-gray-500">Aucun stand n'est assigné</span>
+                        {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <a href="{{ path('app_forum_edit', {'id': forum.id}) }}">edit</a>
-
-    {{ include('forum/_delete_form.html.twig') }}
+        <div class="mt-6 flex space-x-4">
+            {% if forum.user == app.user %}
+                <a href="{{ path('app_stand') }}" class="text-pink-500 hover:text-pink-700">Ajouter un stand</a>
+            {% endif %}
+            <a href="{{ path('app_note_forum_new', {'id': forum.id}) }}" class="text-purple-500 hover:text-purple-700">
+                Noter le forum
+                </a>
+            <a href="{{ path('app_forum') }}" class="text-blue-500 hover:text-blue-700">Retourner à la liste</a>
+                {% if forum.user == app.user %}
+                    <a href="{{ path('app_forum_edit', {'id': forum.id}) }}" class="text-green-500 hover:text-green-700">Modifier</a>
+                    {{ include('forum/_delete_form.html.twig') }}
+                {% endif %}
+            </div>
+    </div>
 {% endblock %}

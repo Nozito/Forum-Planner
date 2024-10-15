@@ -6,13 +6,13 @@
     <div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
         <div class="space-y-4">
             <p class="mb-4 text-gray-700 text-sm">
-                If an account matching your email exists, an email was just sent with a link to reset your password.
-                The link will expire in
+                Si un compte correspondant à votre adresse email existe, un email vient d'être envoyé avec un lien pour réinitialiser votre mot de passe.
+                Ce lien expirera dans
                 <span class="font-semibold">{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}</span>.
             </p>
             <p class="text-gray-700 text-sm">
-                If you don't receive an email, please check your spam folder or
-                <a href="{{ path('app_forgot_password_request') }}" class="text-blue-500 hover:text-blue-700 underline">try again</a>.
+                Si vous n'avez pas reçu l'email, veuillez vérifier votre dossier de courrier indésirable ou
+                <a href="{{ path('app_forgot_password_request') }}" class="text-blue-500 hover:text-blue-700 underline">réessayer</a>.
             </p>
         </div>
     </div>

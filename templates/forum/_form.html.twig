@@ -1,4 +1,19 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="space-y-4">
+    {{ form_row(form.title, {'attr': {'class': 'mt-1 w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'}}) }}
+
+    {{ form_row(form.description, {'attr': {'class': 'mt-1 w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'}}) }}
+
+    {{ form_row(form.location, {'attr': {'class': 'mt-1 w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'}}) }}
+
+    <div>
+        <label for="picture" class="block text-gray-700">Upload Image</label>
+        <input type="file" id="picture" name="picture" class="mt-1 w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        {% if forum.picture %}
+            <img src="{{ asset('uploads/images/' ~ forum.picture) }}" alt="Forum Image" class="mt-4 h-32 rounded-lg">
+        {% endif %}
+    </div>
+
+    {{ form_row(form.user, {'attr': {'class': 'mt-1 w-full border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'}}) }}
+
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Update</button>
+</div>

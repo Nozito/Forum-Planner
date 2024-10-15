@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TimeslotRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -17,7 +18,7 @@ class Timeslot
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $startDateTime = null;
+    private ?DateTimeInterface $startDateTime = null;
 
     #[ORM\ManyToOne(inversedBy: 'timeSlots')]
     private ?Stand $stand = null;
@@ -38,12 +39,12 @@ class Timeslot
         return $this->id;
     }
 
-    public function getStartDateTime(): ?\DateTimeInterface
+    public function getStartDateTime(): ?DateTimeInterface
     {
         return $this->startDateTime;
     }
 
-    public function setStartDateTime(\DateTimeInterface $startDateTime): static
+    public function setStartDateTime(DateTimeInterface $startDateTime): static
     {
         $this->startDateTime = $startDateTime;
 

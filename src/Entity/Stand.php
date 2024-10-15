@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\StandRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -29,7 +30,7 @@ class Stand
     private ?int $capacity = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $duration = null;
+    private ?DateTimeInterface $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'stands')]
     private ?Forum $forum = null;
@@ -40,9 +41,19 @@ class Stand
     #[ORM\OneToMany(targetEntity: Timeslot::class, mappedBy: 'stand')]
     private Collection $timeSlots;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $note = null;
+
+    /**
+     * @var Collection<int, NoteStand>
+     */
+    #[ORM\OneToMany(targetEntity: NoteStand::class, mappedBy: 'stand')]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->timeSlots = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,12 +109,12 @@ class Stand
         return $this;
     }
 
-    public function getDuration(): ?\DateTimeInterface
+    public function getDuration(): ?DateTimeInterface
     {
         return $this->duration;
     }
 
-    public function setDuration(\DateTimeInterface $duration): static
+    public function setDuration(DateTimeInterface $duration): static
     {
         $this->duration = $duration;
 
@@ -150,5 +161,61 @@ class Stand
         }
 
         return $this;
+    }
+
+    public function getNote(): ?float
+    {
+        return $this->note;
+    }
+
+    public function setNote(?float $note): static
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NoteStand>
+     */
+
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(NoteStand $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setStand($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(NoteStand $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getStand() === $this) {
+                $note->setStand(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAverageRating(): float
+    {
+        $total = 0;
+        $count = 0;
+
+        foreach ($this->notes as $note) {
+            $total += $note->getNote();
+            $count++;
+        }
+
+        return $count > 0 ? round($total / $count, 1) : 0;
     }
 }

@@ -4,7 +4,7 @@
 
 {% block javascripts %}
     {% block importmap %}
-        {{ importmap(['app', 'search_bar']) }}
+        {{ importmap(['app', 'search_bar', 'stars']) }}
     {% endblock %}
 {% endblock %}
 
@@ -31,6 +31,7 @@
                     <th class="py-3 px-6 text-left font-semibold text-gray-700">Image</th>
                     <th class="py-3 px-6 text-left font-semibold text-gray-700">Description</th>
                     <th class="py-3 px-6 text-left font-semibold text-gray-700">Location</th>
+                    <th class="py-3 px-6 text-left font-semibold text-gray-700">Note</th>
                     <th class="py-3 px-6 text-left font-semibold text-gray-700">Actions</th>
                 </tr>
                 </thead>
@@ -61,8 +62,33 @@
                         <td class="py-4 px-6">{{ forum.description }}</td>
                         <td class="py-4 px-6">{{ forum.location }}</td>
                         <td class="py-4 px-6">
+                            {% if forum.notes|length > 0 %}
+                                {% set total = 0 %}
+                                {% for noteForum in forum.notes %}
+                                    {% set total = total + noteForum.note %}
+                                {% endfor %}
+                                {% set average = (total / forum.notes|length)|round(1, 'floor') %}
+
+                                <div class="rating mb-4 flex items-center">
+                                    {% for i in 1..5 %}
+                                        <label class="cursor-pointer" aria-labelledby="star{{ i }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 viewBox="0 0 24 24"
+                                                 class="w-8 h-8 {{ average >= i ? 'fill-yellow-500' : 'fill-gray-300' }}">
+                                                <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
+                                            </svg>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <span class="text-gray-500">Pas de note</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6">
                             <a href="{{ path('app_forum_show', {'id': forum.id}) }}" class="text-blue-500 hover:underline">Voir</a>
-                            <a href="{{ path('app_forum_edit', {'id': forum.id}) }}" class="text-blue-500 hover:underline">Modifier</a>
+                            {% if forum.user == app.user %}
+                                <a href="{{ path('app_forum_edit', {'id': forum.id}) }}" class="text-blue-500 hover:underline">Modifier</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

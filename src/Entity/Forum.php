@@ -37,9 +37,16 @@ class Forum
     #[ORM\OneToMany(targetEntity: Stand::class, mappedBy: 'forum')]
     private Collection $stands;
 
+    /**
+     * @var Collection<int, NoteForum>
+     */
+    #[ORM\OneToMany(targetEntity: NoteForum::class, mappedBy: 'forum')]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->stands = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,5 +142,49 @@ class Forum
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, NoteForum>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(NoteForum $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setForum($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(NoteForum $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getForum() === $this) {
+                $note->setForum(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAverageNoteofStands(): float
+    {
+        $total = 0;
+        $count = 0;
+        foreach ($this->stands as $stand) {
+            $total += $stand->getNote();
+            $count++;
+        }
+        if ($count === 0) {
+            return 0;
+        }
+        return $total / $count;
     }
 }

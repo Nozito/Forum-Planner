@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NoteStand{% endblock %}
+
+{% block body %}
+    <h1>NoteStand</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ note_stand.id }}</td>
+            </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ note_stand.note }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_note_stand_index') }}">back to list</a>
+
+    <a href="{{ path('app_note_stand_edit', {'id': note_stand.id}) }}">edit</a>
+
+    {{ include('note_stand/_delete_form.html.twig') }}
+{% endblock %}
